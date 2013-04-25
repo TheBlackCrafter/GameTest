@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import org.lwjgl.opengl.Display;
 
@@ -14,11 +16,26 @@ public class Object {
 	private float x = 0f,y = 0f,xv = 0.0f,yv = 0.0f;
 	private int w = 80,h = 80,shape = shape_CIRCLE, wallAction = wallAction_NOTHING;
 	private Color c = Color.cyan;
-	private Drawer draw = new Drawer();
 	private Boolean visable = true;
-	
+	private ActionListener action;
+	private Drawer draw = new Drawer();
+	private CollisionBox box = new CollisionBox();
 
+	public Object(){
+		action = new ActionListener() {@Override
+			public void actionPerformed(ActionEvent e) {
+			
+		}};
+	}
+	
+	
 	public void update(){
+		box.setTop(y+h);
+		box.setBottom(y-h);
+		box.setLeft(x-w);
+		box.setRight(x+w);
+		
+		
 		
 		x = x + xv;
 		y = y + yv;
@@ -46,6 +63,8 @@ public class Object {
 			break;
 		}
 		
+		action.actionPerformed(null);
+		
 		if(visable){
 			if(shape == shape_CIRCLE){
 				draw.circle(x, y, c, w);
@@ -54,6 +73,14 @@ public class Object {
 				draw.cube(x, y, c, w, h);
 			}
 		}
+	}
+	
+	public CollisionBox getCollisionBox(){
+		return box;
+	}
+	
+	public boolean isCollision(CollisionBox b){
+		return box.tuches(b);
 	}
 	
 	public void setColor(Color C){
@@ -134,5 +161,19 @@ public class Object {
 
 	public void setWallAction(int wallAction) {
 		this.wallAction = wallAction;
+	}
+
+	/**
+	 * @return the action
+	 */
+	public ActionListener getAction() {
+		return action;
+	}
+
+	/**
+	 * @param action the action to set
+	 */
+	public void setAction(ActionListener action) {
+		this.action = action;
 	}
 }
