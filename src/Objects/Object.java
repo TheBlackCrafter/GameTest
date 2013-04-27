@@ -1,3 +1,4 @@
+package Objects;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ public class Object {
 	private ActionListener action;
 	private Drawer draw = new Drawer();
 	private CollisionBox box = new CollisionBox();
+	private boolean update = true;
 
 	public Object(){
 		action = new ActionListener() {@Override
@@ -30,6 +32,7 @@ public class Object {
 	
 	
 	public void update(){
+	if(update){
 		box.setTop(y+h);
 		box.setBottom(y-h);
 		box.setLeft(x-w);
@@ -74,7 +77,7 @@ public class Object {
 			}
 		}
 	}
-	
+	}
 	public CollisionBox getCollisionBox(){
 		return box;
 	}
@@ -175,5 +178,21 @@ public class Object {
 	 */
 	public void setAction(ActionListener action) {
 		this.action = action;
+	}
+
+
+	/**
+	 * @return the update
+	 */
+	public boolean isUpdate() {
+		return update;
+	}
+
+
+	/**
+	 * @param update the update to set
+	 */
+	public void setUpdate(boolean update) {
+		this.update = update;
 	}
 }

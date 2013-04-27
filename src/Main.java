@@ -1,13 +1,18 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+
+import Objects.Drawer;
+import Objects.Object;
  
 public class Main {
  
@@ -15,30 +20,21 @@ public class Main {
 	static Object plank = new Object();
 	static Object fire = new Object();
 	static Object ball = new Object();
-	static Object block[][] = new Object[15][15];
+	static Object mouse = new Object();
+	static Object block[][] = new Object[21][21];
 	static long lastFrame, lastFPS;
 	static boolean isLaunched = false;
-	static int deltaX, i1,i2;
+	static boolean isTurned = false;
+	static int deltaX, i1,i2,i3;
+	public static Level l1;
  
 	public static void init(){
-		i1 = 70;
-		for(int i = 1; i <=12 ; i++){
-			i2 = 580;
-			for(int j = 1; j <= 12; j++){
-				block[i][j] = new Object();
-				block[i][j].setColor(new Color(i1));
-				block[i][j].setShape(block[i][j].shape_CUBE);
-				block[i][j].setWidht(30);
-				block[i][j].setHeight(5);
-				block[i][j].setWallAction(block[i][j].wallAction_BOUNCE);
-				block[i][j].X(i1);
-				block[i][j].Y(i2);
-				System.out.println(i1 + ", "+ i2);
-				i2 = i2-11;
-			}
-			i1 = i1+61;
-		}
-		
+		mouse.setColor(Color.YELLOW);
+		mouse.setShape(mouse.shape_CUBE);
+		mouse.setUpdate(false);
+		mouse.setWidht(1);
+		mouse.setHeight(1);
+		mouse.setWallAction(mouse.wallAction_NOTHING);
 		
 		plank.setColor(Color.cyan);
 		plank.setShape(plank.shape_CUBE);
@@ -71,10 +67,12 @@ public class Main {
 				}
 		}});
 		
+		 l1 = new Level(new File("rec/1.lvl"));
+		 l1.Draw();
 		isLaunched = false;
 	}
 	
-	public static void update(int delta) {
+	public static void update(int delta) {	
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) 		plank.X(plank.getX() - delta*0.8f);
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) 	plank.X(plank.getX() + delta*0.8f);
@@ -84,7 +82,7 @@ public class Main {
 		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			if(!isLaunched){
 				isLaunched = true;
-				ball.setYvelocity(-6);
+				ball.setYvelocity(-7);
 			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_ADD)) 		plank.setWidht(plank.getWidht() + 10);
@@ -92,20 +90,18 @@ public class Main {
 		if(ball.getY() <= 10){
 			init();
 		}
+		if(Mouse.isButtonDown(0) || Mouse.isButtonDown(1)){
+			mouse.setUpdate(true);
+			mouse.X(Mouse.getX());
+			mouse.Y(Mouse.getY());
+		}else{mouse.setUpdate(false);}
 		
 		if(ball.isCollision(plank.getCollisionBox())){
 			
 			deltaX = (int)plank.getX() - (int)ball.getX();
 			ball.setYvelocity(ball.getYvelocity()*-1);
-			if(deltaX>7 || deltaX<7){
-				deltaX = deltaX/2;
-			}
-			if(deltaX>7 || deltaX<7){
-				deltaX = deltaX/2;
-			}
-			if(deltaX>9 || deltaX<9){
-				deltaX = deltaX/2;
-			}
+
+				deltaX = deltaX/8;
 			
 			ball.setXvelocity(ball.getXvelocity() - deltaX);
 			ball.Y(ball.getY() + 10);	
@@ -116,24 +112,43 @@ public class Main {
 		fire.update();
 		ball.update();
 		plank.update();
-		
+		mouse.update();
 		for(int i = 1; i <=12 ; i++){
-			for(int j = 1; j <= 12; j++){
-				if(ball.isCollision(block[i][j].getCollisionBox())){
-					block[i][j].setVisable(false);
+			for(int j = 1; j <= 20; j++){
+				if(ball.isCollision(block[i][j].getCollisionBox())&& block[i][j].isUpdate()){
+					block[i][j].setUpdate(false);
+					if(!isTurned){
+						isTurned = true;
+						//ball.setXvelocity(ball.getXvelocity()*-1);
+						ball.setYvelocity(ball.getYvelocity() *-1);
+						ball.X(ball.getX() + ball.getXvelocity()*2);
+						ball.Y(ball.getY() + ball.getXvelocity()*2);
+					}
+
 				}
 				if(block[i][j].getVisable()){
 					block[i][j].update();
 				}
+				
+				//editor thingy
+				if(block[i][j].isCollision(mouse.getCollisionBox()) && mouse.isUpdate()){
+					if(Mouse.isButtonDown(0)){
+						block[i][j].setUpdate(true);
+					}else{
+						block[i][j].setUpdate(false);
+					}
+					
+				}
 			}
 				
 		}
+		isTurned = false;
 	}
 			
 	
 
-	public static void main(String[] args){
-		init();
+	public static void startGame(){
+		
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(800, 600));
@@ -142,10 +157,10 @@ public class Main {
 			e.printStackTrace();
 			System.exit(0);
 		}
- 
 		initGL();
 		getDelta();
 		lastFPS = getTime();
+		init();
  
 		while (!Display.isCloseRequested()) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
