@@ -15,7 +15,7 @@ public class Object {
 	public final int wallAction_NOTHING = 13;
 	
 	private float x = 0f,y = 0f,xv = 0.0f,yv = 0.0f;
-	private int w = 80,h = 80,shape = shape_CIRCLE, wallAction = wallAction_NOTHING;
+	private int w = 80,h = 80,shape = shape_CIRCLE, wallAction = wallAction_NOTHING, name;
 	private Color c = Color.cyan;
 	private Boolean visable = true;
 	private ActionListener action;
@@ -37,7 +37,8 @@ public class Object {
 		box.setBottom(y-h);
 		box.setLeft(x-w);
 		box.setRight(x+w);
-		
+		box.setX(this.x);
+		box.setY(this.y+ (h/2));
 		
 		
 		x = x + xv;
@@ -194,5 +195,22 @@ public class Object {
 	 */
 	public void setUpdate(boolean update) {
 		this.update = update;
+	}
+
+
+	/**
+	 * @return the name
+	 * name is not used in the actual engine!!
+	 */
+	public int getName() {
+		return name;
+	}
+
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(int name) {
+		this.name = name;
 	}
 }

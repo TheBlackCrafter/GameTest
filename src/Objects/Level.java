@@ -6,27 +6,31 @@ import mainPack.Main;
 
 public class Level extends Main{
 
+	public static final int AIR = 10;
+	public static final int BLOCK = 11;
+	public static final int BLOCK_DOUBLE_1 = 12;
+	public static final int BLOCK_DOUBLE_2 = 13;
+	
 	private LFile file = new LFile();
 	private String onthouder;
-	private boolean isShown[][] = new boolean[13][41];
+	private int type[][] = new int[13][41];
 	
 	public void open(File f){
 		file.setFile(f);
 		file.open(false);
 		i1 = 1;
 			while( i1 <=40){
-				i2 = 1;
-				while(i2<=12){
+				i2 = 2;
+				i3 = 1;
+				while(i2<=24){
 					onthouder = file.string[i1];
-					if(onthouder.substring(i2-1,i2).equals("0")){
-						isShown[i2][i1] = false;
-					}else{
-						isShown[i2][i1] = true;
-					}
-					
-					i2++;
+						type[i3][i1] = Integer.parseInt(onthouder.substring(i2-1,i2+1));
+						System.out.println(type[i3][i1]);
+					i3++;
+					i2= i2+2;
 				}
 				i1++;
+				System.out.println("==");
 			}
 		
 	}
@@ -46,6 +50,7 @@ public class Level extends Main{
 				block[i][j].Y(i2);
 				block[i][j].setUpdate(true);
 				block[i][j].update();
+				block[i][j].setName(10);
 				i2 = i2-11;
 			}
 			i1 = i1+61;
@@ -53,9 +58,23 @@ public class Level extends Main{
 		
 		for(int i = 1; i <=12 ; i++){
 			for(int j = 1; j <= 40; j++){
-				if(!isShown[i][j]){
+				if(type[i][j] == 10){
 					block[i][j].setUpdate(false);
+					block[i][j].setName(10);
 				}
+				if(type[i][j] == 11){
+					block[i][j].setName(11);
+				}
+				if(type[i][j] == 12){
+					block[i][j].setColor(Color.red);
+					block[i][j].setName(12);
+				}
+				if(type[i][j] == 13){
+					block[i][j].setColor(Color.green);
+					block[i][j].setName(13);
+				}
+				
+
 			}
 		}
 	}
@@ -69,12 +88,8 @@ public class Level extends Main{
 			onthouder = "";
 			i2 = 1;
 			while(i2<=12){
-				if(block[i2][i1].isUpdate()){
-					onthouder = onthouder + "1";
-				}else{
-					onthouder = onthouder + "0";
-				}
-				
+					onthouder = onthouder + Integer.toString(block[i2][i1].getName());
+					System.out.println(onthouder);
 				i2++;
 			}
 			file.append(onthouder);

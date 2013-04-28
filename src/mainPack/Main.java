@@ -24,7 +24,7 @@ public class Main{
 	public static long lastFrame, lastFPS;
 	public static boolean isLaunched = false;
 	public static boolean isTurned = false;
-	public static int deltaX, i1,i2,i3;
+	public static int deltaX, i1,i2,i3, delta;
 	public static String level;
 	public static Level l1,l2 = new Level();
  
@@ -91,8 +91,8 @@ public class Main{
  
 		while (!Display.isCloseRequested()) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			int deltaTime = getDelta();
-			Update.updateFrame(deltaTime);
+			delta = getDelta();
+			Update.updateFrame();
 			Display.update();
 			Display.sync(60);
 		}
