@@ -29,6 +29,10 @@ public class Update extends Main{
 			mouse.X(Mouse.getX());
 			mouse.Y(Mouse.getY());
 		}else{mouse.setUpdate(false);}
+		if(Keyboard.isKeyDown(Keyboard.KEY_1))			mouse.setWidht(mouse.getWidht() +5); mouse.setHeight(mouse.getHeight() +5);
+		if(Keyboard.isKeyDown(Keyboard.KEY_2))			mouse.setWidht(mouse.getWidht() -5); mouse.setHeight(mouse.getHeight() -5);
+		
+		
 	//
 		if(ball.isCollision(plank.getCollisionBox())){
 			
