@@ -1,14 +1,20 @@
 package mainPack;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import legendsDarkApi.*;
 
-public class StartClass extends Main{
+import legendsDarkApi.LButton;
+import legendsDarkApi.LFrame;
+import legendsDarkApi.LPicture;
+import legendsDarkApi.LTextField;
+import Threading.Thread_Main;
+
+public class StartScreen extends Main{
 	public static LFrame startScreen;
 	public static LButton start = new LButton();
 	public static LButton instellingen = new LButton();
 	public static LPicture pic = new LPicture("rec/BG.png");
 	public static LTextField levelField = new LTextField();
+	public static Thread_Main mainThread = new Thread_Main();
 	
 	public static void main(String[] args){
 		startScreen = new LFrame();
@@ -26,7 +32,7 @@ public class StartClass extends Main{
 		start.get().addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent arg0) {
 			level = levelField.getText();	
 			startScreen.get().dispose();
-			startGame();
+			mainThread.Start();
 		}});
 		
 		instellingen.setPlace(2, 2);
@@ -43,12 +49,9 @@ public class StartClass extends Main{
 		startScreen.get().pack();
 		startScreen.get().setResizable(false);
 		
+
+		
 	}
-	
-	
-	
-	
-	
 	
 	
 }

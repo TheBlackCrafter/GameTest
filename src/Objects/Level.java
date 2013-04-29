@@ -19,19 +19,19 @@ public class Level extends Main{
 		file.setFile(f);
 		file.open(false);
 		i1 = 1;
-			while( i1 <=40){
-				i2 = 2;
-				i3 = 1;
-				while(i2<=24){
-					onthouder = file.string[i1];
-						type[i3][i1] = Integer.parseInt(onthouder.substring(i2-1,i2+1));
-						System.out.println(type[i3][i1]);
-					i3++;
-					i2= i2+2;
-				}
-				i1++;
-				System.out.println("==");
+		while( i1 <=40){
+			i2 = 1;
+			i3 = 1;
+			while(i2<=23){
+				onthouder = file.string[i1];
+					type[i3][i1] = Integer.parseInt(onthouder.substring(i2-1,i2+1));
+					System.out.println(type[i3][i1]);
+				i3++;
+				i2= i2+2;
 			}
+			i1++;
+			System.out.println("==");
+		}
 		
 	}
 	
@@ -58,20 +58,20 @@ public class Level extends Main{
 		
 		for(int i = 1; i <=12 ; i++){
 			for(int j = 1; j <= 40; j++){
-				if(type[i][j] == 10){
+				if(type[i][j] ==  AIR){
 					block[i][j].setUpdate(false);
-					block[i][j].setName(10);
+					block[i][j].setName(AIR);
 				}
-				if(type[i][j] == 11){
-					block[i][j].setName(11);
+				if(type[i][j] == BLOCK){
+					block[i][j].setName(BLOCK);
 				}
-				if(type[i][j] == 12){
+				if(type[i][j] == BLOCK_DOUBLE_1){
 					block[i][j].setColor(Color.red);
-					block[i][j].setName(12);
+					block[i][j].setName(BLOCK_DOUBLE_1);
 				}
-				if(type[i][j] == 13){
+				if(type[i][j] == BLOCK_DOUBLE_2){
 					block[i][j].setColor(Color.green);
-					block[i][j].setName(13);
+					block[i][j].setName(BLOCK_DOUBLE_2);
 				}
 				
 

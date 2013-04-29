@@ -10,25 +10,20 @@ public class Update extends Main{
 		KeyHandler.KeyControl();
 		
 		if(ball.isCollision(plank.getCollisionBox())){
-			
 			deltaX = (int)plank.getX() - (int)ball.getX();
 			ball.setYvelocity(ball.getYvelocity()*-1);
-
-				deltaX = deltaX/8;
-			
+			deltaX = deltaX/8;
 			ball.setXvelocity(ball.getXvelocity() - deltaX);
 			ball.Y(ball.getY() + 10);	
-			
 		}
 	//
-		
 		fire.update();
 		ball.update();
 		plank.update();
 		mouse.update();
 		for(int i = 1; i <=12 ; i++){
 			for(int j = 1; j <= 40; j++){
-				if(ball.isCollision(block[i][j].getCollisionBox())&& block[i][j].isUpdate()){
+				if(ball.isCollision(block[i][j].getCollisionBox())&& !(block[i][j].getName() == Level.AIR)){
 					block[i][j].setName(Level.AIR);
 					if(!isTurned){
 						isTurned = true;

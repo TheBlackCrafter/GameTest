@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
@@ -12,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import Objects.Drawer;
 import Objects.Level;
 import Objects.Object;
+import Threading.Thread_Editor;
  
 public class Main{
  
@@ -24,9 +26,10 @@ public class Main{
 	public static long lastFrame, lastFPS;
 	public static boolean isLaunched = false;
 	public static boolean isTurned = false;
-	public static int deltaX, i1,i2,i3, delta;
+	public static int deltaX, i1,i2,i3, delta, brush;
 	public static String level;
 	public static Level l1,l2 = new Level();
+	public static Thread_Editor thread_Editor = new Thread_Editor();
  
 	public static void init(){
 		mouse.setColor(Color.YELLOW);
@@ -75,8 +78,7 @@ public class Main{
 			
 
 	public static void startGame(){
-		
-		
+
 		try {
 			Display.setDisplayMode(new DisplayMode(800, 600));
 			Display.create();

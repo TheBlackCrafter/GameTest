@@ -6,6 +6,9 @@ import org.lwjgl.input.Mouse;
 public class KeyHandler extends Main{
 	static void KeyControl(){
 		
+		if(Keyboard.isKeyDown(Keyboard.KEY_E)){
+			thread_Editor.Start();
+		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_P))			l2.Save();	
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) 		plank.X(plank.getX() - delta*0.8f);
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) 	plank.X(plank.getX() + delta*0.8f);
